@@ -1,0 +1,28 @@
+GET http://localhost:5050/posts
+
+#####
+POST http://localhost:5050/posts HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Ciao al mondo",
+    "content": "Saluti importanti",
+    "img": "http://boo.jpg",
+    "author": "Socrate",
+    "rate": 3
+    }
+
+
+#####
+GET http://localhost:5050/posts/64cff9c200f2ffa5128dd252
+
+#####
+PATCH http://localhost:5050/posts/64cff9c200f2ffa5128dd252 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "TITOLO NUOVO"
+}
+
+#####
+DELETE http://localhost:5050/posts/64d27088afc2544f80d906e9
