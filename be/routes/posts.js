@@ -1,15 +1,18 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const PostsModel = require('../models/postModel');
-const postModel = require('../models/postModel');
+
+const logger = require('../middlewares/logger');
+const isValidPost = require('../middlewares/validatePosts');
+const { postBodyParams, validatePostBody } = require('../middlewares/postValidation');
 
 const post = express.Router()
 
 
 
-post.get('/posts', async (req, res)=> {
+post.get('/posts',  async (req, res) => {
     try {
-        const posts =  await PostsModel.find();
+        const posts = await PostsModel.find();
 
         res.status(200).send({
             statusCode: 200,
@@ -25,9 +28,9 @@ post.get('/posts', async (req, res)=> {
 });
 
 
-post.get('/posts/:postId', async (req, res) =>{
+post.get('/posts/:postId', async (req, res) => {
 
-const { postId } = req.params;
+    const { postId } = req.params;
 
     try {
         const postById = await PostsModel.findById(postId);
@@ -41,19 +44,19 @@ const { postId } = req.params;
             statusCode: 500,
             message: "internal server Error",
             error,
-    });
-}
+        });
+    }
 });
 
-post.post('/posts', async (req, res) =>{
-    
-const newPost = new PostsModel({
-    title: req.body.title,
-    content: req.body.content,
-    img: req.body.img,
-    author: req.body.author,
-    rate: Number(req.body.rate)
-})
+post.post('/posts', postBodyParams, validatePostBody, async (req, res) => {
+
+    const newPost = new PostsModel({
+        title: req.body.title,
+        content: req.body.content,
+        img: req.body.img,
+        author: req.body.author,
+        rate: Number(req.body.rate)
+    })
 
     try {
         const post = await newPost.save();
@@ -77,7 +80,7 @@ post.patch('/posts/:id', async (req, res) => {
 
     const postExist = await PostsModel.findById(id)
 
-    if(!postExist) {
+    if (!postExist) {
         return res.status(404).send({
             statusCode: 404,
             message: `Post with id ${id} not found`
@@ -86,7 +89,7 @@ post.patch('/posts/:id', async (req, res) => {
     try {
         const postId = id;
         const dataToUpdate = req.body;
-        const options = { new: true};
+        const options = { new: true };
 
         const result = await PostsModel.findByIdAndUpdate(postId, dataToUpdate, options)
 
@@ -101,7 +104,7 @@ post.patch('/posts/:id', async (req, res) => {
             message: "Internal server error",
             error,
         });
-    }     
+    }
 });
 
 
@@ -110,7 +113,7 @@ post.delete('/posts/:id', async (req, res) => {
 
     const postExist = await postModel.findById(id)
 
-    if(!postExist) {
+    if (!postExist) {
         return res.status(404).send({
             statusCode: 404,
             message: `Post with id ${id} not found`
@@ -119,7 +122,7 @@ post.delete('/posts/:id', async (req, res) => {
 
     try {
         const postTodelete = await postModel.findByIdAndDelete(id)
-        res.status(200).send ({
+        res.status(200).send({
             statusCode: 200,
             message: `Post with id ${id} deleted successfully`,
         });
