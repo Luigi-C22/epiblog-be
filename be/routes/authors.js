@@ -1,5 +1,5 @@
-const express = require('express')
-const author = express.Router
+const express = require('express');
+const author = express.Router;
 const AuthorModel = require('../models/authorModel');
 
 author.get('/authors', async (req, res) => {
@@ -132,5 +132,4 @@ author.delete('/authors/:id', async (req, res) => {
         });
     }
 });
-
 module.exports = author;

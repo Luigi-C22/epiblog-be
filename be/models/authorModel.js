@@ -21,6 +21,10 @@ const AuthorSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
-}, {timestamps: true, strict: true})
+}, 
+{
+    timestamps: true,
+    strict: true
+});
 
-module.exports = mongoose.model('Author', AuthorSchema, 'authors');
+module.exports = mongoose.model("Author", AuthorSchema, "authors");
