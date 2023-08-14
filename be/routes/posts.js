@@ -10,7 +10,7 @@ const post = express.Router()
 
 
 
-post.get('/posts',  async (req, res) => {
+post.get('/posts', async (req, res) => {
     try {
         const posts = await PostsModel.find();
 
@@ -51,12 +51,13 @@ post.get('/posts/:postId', async (req, res) => {
 post.post('/posts', postBodyParams, validatePostBody, async (req, res) => {
 
     const newPost = new PostsModel({
+        category: req.body.category,
         title: req.body.title,
-        content: req.body.content,
-        img: req.body.img,
+        cover: req.body.cover,
+        readTime: req.body.readTime,
         author: req.body.author,
-        rate: Number(req.body.rate)
-    })
+        content: req.body.content,
+    });
 
     try {
         const post = await newPost.save();

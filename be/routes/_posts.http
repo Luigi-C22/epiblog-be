@@ -10,11 +10,11 @@ Content-Type: application/json
     "cover": "https://picsum.photos/500/300",
     "readTime": {
         "value": 10,
-        "unit": "minutes"
+        "unit": 9
     },
     "author": {
-        "name": "Luigi",
-        "avatar": "https://picsum.photos/100/100"
+        "name": "Luigix",
+        "avatar": "cucuzzaro"
     },
     "content": "Lorem ipsum dolor sit amet..."
    }

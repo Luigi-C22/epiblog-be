@@ -1,13 +1,17 @@
 GET http://localhost:5050/authors
 
+
+#####
+GET http://localhost:5050/authors/byName?authorName=Lewis
+
 #####
 POST http://localhost:5050/authors HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Luigi",
-    "surname": "Cian",
-    "email": "luigi@libero.it",
-    "dob": "22/02/1971",
+    "name": "Lewis",
+    "surname": "Cyan",
+    "email": "lewis@libero.it",
+    "dob": "22/02/1991",
     "avatar": "https://www.freepik.com/premium-ai-image/muslim-men-sit-read-books-pray_59122856.htm#query=img&position=47&from_view=keyword&track=sph"
 }

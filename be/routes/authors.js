@@ -1,6 +1,7 @@
 const express = require('express');
-const author = express.Router;
+const author = express.Router();
 const AuthorModel = require('../models/authorModel');
+
 
 author.get('/authors', async (req, res) => {
     try {
@@ -13,6 +14,24 @@ author.get('/authors', async (req, res) => {
         res.status(500).send({
             statusCode: 500,
             messagge: "Internal server error",
+        });
+    }
+});
+
+author.get('/authors/byName/', async (req, res) => {
+    const { authorName } = req.query;
+
+    try {
+        const authorByName = await AuthorModel.find({ name: authorName});
+
+        res.status(200).send({
+            statusCode: 200,
+            payload: authorByName,
+        });
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "Internal server error",
         });
     }
 });

@@ -1,33 +1,38 @@
 const { body, validationResult } = require('express-validator');
 
 const postBodyParams = [
+    body('category')
+    .notEmpty()
+    .isString()
+    .isLength({min: 5})
+    .withMessage('Title is required and must be greater than 5 characters'),
+    
     body('title')
     .notEmpty()
     .isString()
-    .isLength({min: 8})
-    .withMessage('Title is required and must be greater than 8 characters'),
+    .isLength({min: 5})
+    .withMessage('Title is required and must be greater than 5 characters'),
 
-    body('content')
+    body('cover')
     .notEmpty()
-    .isString()
-    .isLength({min: 20})
-    .withMessage('String must have at least 20 characters'),
-
-    body('img')
-    .notEmpty()
-    .isString()
     .isURL()
-    .withMessage('Img must be an URL string'),
+    .withMessage('Cover must be an URL string'),
 
+    body('readTime')
+    .notEmpty()
+    .isNumeric()
+    .withMessage('String must have Number'),
+    
     body('author')
     .notEmpty()
     .isString()
     .withMessage('Author must be a string'),
 
-    body('rate')
+    body('content')
     .notEmpty()
     .isString()
-    .withMessage('Rate must be a Number')
+    .isLength({min: 10})
+    .withMessage('Content must be a String at least 10 characters')
 ];
 
 const validatePostBody = (req, res, next) => {
@@ -36,6 +41,6 @@ const validatePostBody = (req, res, next) => {
         return res.status(400).json({errors: errors.array()})
     }
     next()
-}
+};
 
-module.exports = {postBodyParams, validatePostBody};
+module.exports = { postBodyParams, validatePostBody };

@@ -30,7 +30,7 @@ const PostModelSchema = new mongoose.Schema({
         },
         avatar: {
             type: String,
-            required: true,
+            required: false,
         },
     },
     content: {

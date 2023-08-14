@@ -10,7 +10,7 @@ const app = express();
 
 //requires delle routes
 const postsRoute = require("./routes/posts");
-//const authorsRoute = require("./routes/authors");
+const authorsRoute = require("./routes/authors");
 
 
 //middleware
@@ -18,21 +18,21 @@ app.use(express.json());
 app.use(logger);
 
 // import routes
+app.use("/", authorsRoute);
 app.use("/", postsRoute);
-//app.use("/", authorsRoute);
 
 mongoose.connect(process.env.MONGO_DB_URL);
 
 
 
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Errore di connessione al server!'))
+db.on('error', console.error.bind(console, 'Server connection error!'))
 db.once('open', () => {
-    console.log('Database MongoDB connesso!');
+    console.log('Database MongoDB connected!');
 });
 
 //ultima riga
 app.listen(PORT, () =>
-    console.log(`Server avviato ed in ascolto sulla PORTA ${PORT}`)
+    console.log(`Server started and listening on PORT ${PORT}`)
 );
 
