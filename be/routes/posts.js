@@ -6,16 +6,24 @@ const logger = require('../middlewares/logger');
 const isValidPost = require('../middlewares/validatePosts');
 const { postBodyParams, validatePostBody } = require('../middlewares/postValidation');
 
-const post = express.Router()
+const post = express.Router(); 
 
 
-
+// get http://localhost:5050/posts?page=pageSize=20 
 post.get('/posts', async (req, res) => {
+    const { page = 1, pageSize = 3} = req.query //questa riga è l'implementazione della 'pagination'
     try {
-        const posts = await PostsModel.find();
+        const posts = await PostsModel.find()
+        .limit(pageSize) //limitiamo i numero di documenti a quello che passiamo nella query
+        .skip((page - 1) * pageSize) ; //saltiamo dall'ultima pagina aperta al primo risultato della successiva
+
+const totalPosts = await PostsModel.count()
 
         res.status(200).send({
             statusCode: 200,
+            totalPosts: totalPosts,
+            currentPage: +page,
+            pageSize: +pageSize,
             posts: posts
         })
     } catch (error) {
@@ -27,6 +35,36 @@ post.get('/posts', async (req, res) => {
     }
 });
 
+
+post.get('/posts/title', async (req, res) => {
+    const { postTitle } = req.query;
+
+    try {
+        const postByTitle = await PostsModel.find({
+            title: {
+                $regex: '.*' + postTitle + '.*',
+                $options: 'i',
+            }
+        })
+
+        if (!postByTitle || postByTitle.length <= 0) {
+            return res.status(404).send({
+                statusCode: 404,
+                message: `Post with title: ${postByTitle} not found`
+            })
+        }
+        res.status(200).send({
+            statusCode: 200,
+            postByTitle,
+        });
+    } catch (error) {
+        res.status(500).send({
+            statusCode: 500,
+            message: "internal server Error",
+            error,
+        })
+    }
+})
 
 post.get('/posts/:postId', async (req, res) => {
 

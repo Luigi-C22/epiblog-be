@@ -18,15 +18,25 @@ const postBodyParams = [
     .isURL()
     .withMessage('Cover must be an URL string'),
 
-    body('readTime')
+    body('readTime.value')
     .notEmpty()
     .isNumeric()
     .withMessage('String must have Number'),
+
+    body('readTime.unit')
+    .notEmpty()
+    .isString()
+    .withMessage('must to declare the time units'),
     
-    body('author')
+    body('author.name')
     .notEmpty()
     .isString()
     .withMessage('Author must be a string'),
+    
+    body('author.avatar')
+    .notEmpty()
+    .isURL()
+    .withMessage('Avatar must be a URL'),
 
     body('content')
     .notEmpty()

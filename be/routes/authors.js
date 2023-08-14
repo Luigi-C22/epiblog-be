@@ -1,7 +1,7 @@
 const express = require('express');
 const author = express.Router();
 const AuthorModel = require('../models/authorModel');
-
+const PostsModel = require('../models/postModel');
 
 author.get('/authors', async (req, res) => {
     try {
@@ -34,6 +34,15 @@ author.get('/authors/byName/', async (req, res) => {
             message: "Internal server error",
         });
     }
+});
+
+author.get('/authors/:id/posts', async (req, res) => {
+    const { id } = req.params;
+    
+    const findAuthor = await AuthorModel.findById(id);
+    const findPost = await PostsModel.find({'author.name': findAuthor.name });
+
+    res.status(200).send(findPost);
 });
 
 author.get('/authors/:id', async (req, res) => {
