@@ -17,6 +17,7 @@ const AuthorSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
+            unique: true,
         },
         dob: {
             type: String,
@@ -25,7 +26,14 @@ const AuthorSchema = new mongoose.Schema(
         avatar: {
             type: String,
             required: true,
-        }
+        },
+        posts: [
+         {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "posts",
+            default: [],
+        },
+        ],
     },
     {
         timestamps: true,

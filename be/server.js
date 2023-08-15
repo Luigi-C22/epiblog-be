@@ -11,7 +11,8 @@ const app = express();
 //requires delle routes
 const postsRoute = require("./routes/posts");
 const authorsRoute = require("./routes/authors");
-
+const loginRoute = require('./routes/login');
+const resourcesRoute = require('./routes/resources')
 
 //middleware
 app.use(express.json());
@@ -20,6 +21,8 @@ app.use(logger);
 // import routes
 app.use("/", authorsRoute);
 app.use("/", postsRoute);
+app.use("/", loginRoute );
+app.use('/', resourcesRoute);
 
 mongoose.connect(process.env.MONGO_DB_URL);
 
