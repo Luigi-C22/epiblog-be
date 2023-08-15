@@ -2,8 +2,10 @@ const express = require('express');
 const author = express.Router();
 const AuthorModel = require('../models/authorModel');
 const PostsModel = require('../models/postModel');
+const bcrypt = require('bcrypt');
 
 author.get('/authors', async (req, res) => {
+
     try {
         const authors = await AuthorModel.find()
         res.status(200).send({
@@ -74,9 +76,13 @@ author.get('/authors/:id', async (req, res) => {
 
 author.post('/authors', async (req, res) => {
 
+    const salt = await bcrypt.genSalt(10) //complessita algoritmo di criptazione
+    const hashedPassword = await bcrypt.hash(req.body.password, salt) // metodo che consente di criptare il parametro che gli abbiamo passato
+
     const newAuthor = AuthorModel({
         name: req.body.name,
         surname: req.body.surname,
+        password: hashedPassword, //abbiamo sostituito il req.body.password (che visualizzava in chiaro) con hashedPassword (che ha criptato la password)
         email: req.body.email,
         dob: req.body.dob,
         avatar: req.body.avatar,
