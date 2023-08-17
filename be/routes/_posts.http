@@ -1,7 +1,7 @@
 GET http://localhost:5050/posts
 
 #####
-POST http://localhost:5050/posts HTTP/1.1
+POST http://localhost:5050/posts/create HTTP/1.1
 Content-Type: application/json
 
 {
@@ -12,8 +12,8 @@ Content-Type: application/json
         "value": 2,
         "unit": "minutes"
     },
-    "author": "64dba88a3242e31dd71ad09f",
-    "content": "Lorem ipsum dolor sit amet..." 
+    "author": "64dd20784f501beffb46cf94",
+    "content": "Questo è il commento per verificare che il post postato sia a post." 
 }
 
 #####

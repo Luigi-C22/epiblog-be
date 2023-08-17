@@ -8,6 +8,8 @@ author.get('/authors', async (req, res) => {
 
     try {
         const authors = await AuthorModel.find()
+        .populate('posts', 'name email');
+
         res.status(200).send({
             statusCode: 200,
             authors,

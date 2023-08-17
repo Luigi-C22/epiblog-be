@@ -5,6 +5,7 @@ const PostsModel = require('../models/postModel');
 const logger = require('../middlewares/logger');
 const isValidPost = require('../middlewares/validatePosts');
 const { postBodyParams, validatePostBody } = require('../middlewares/postValidation');
+const authorModel = require('../models/authorModel');
 
 const post = express.Router();
 
@@ -117,32 +118,39 @@ post.get('/posts/:postId', async (req, res) => {
     }
 });
 
-post.post('/posts', postBodyParams, validatePostBody, async (req, res) => {
-
-    const newPost = new PostsModel({
-        category: req.body.category,
-        title: req.body.title,
-        cover: req.body.cover,
-        readTime: req.body.readTime,
-        author: req.body.author,
-        content: req.body.content,
+post.post('/posts/create', postBodyParams, validatePostBody, async (req, res) => {
+    const user = await authorModel.findOne({ _id: req.body.author });
+    if (!user) {
+    return res.status(404).send({
+        statusCode: 404,
+        message: "user not found!",
     });
+}
 
-    try {
-        const post = await newPost.save();
+const newPost = new PostsModel({
+    category: req.body.category,
+    title: req.body.title,
+    cover: req.body.cover,
+    readTime: req.body.readTime,
+    author: user._id,
+    content: req.body.content,
+});
 
-        res.status(201).send({
-            statusCode: 201,
-            message: "Post saved successfully",
-            payload: post,
-        })
-    } catch (error) {
-        res.status(500).send({
-            statusCode: 500,
-            message: "Internal server error",
-            error,
-        });
-    }
+try {
+    const post = await newPost.save();
+    await authorModel.updateOne({ _id: user._id }, { $push: { posts: post } })
+    res.status(201).send({
+        statusCode: 201,
+        message: "Post saved successfully",
+        payload: post,
+    })
+} catch (error) {
+    res.status(500).send({
+        statusCode: 500,
+        message: "Internal server error",
+        error,
+    });
+}
 });
 
 post.patch('/posts/:id', async (req, res) => {
