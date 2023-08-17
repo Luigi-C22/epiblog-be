@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("./middlewares/logger");
+const cors = require('cors');
+const path = require('path');
 
 const PORT = 5050;
 
@@ -17,6 +19,9 @@ const resourcesRoute = require('./routes/resources')
 //middleware
 app.use(express.json());
 app.use(logger);
+app.use('./uploads', express.static(path.join(__dirname, "./uploads")));
+
+app.use(cors());
 
 // import routes
 app.use("/", authorsRoute);

@@ -6,8 +6,37 @@ const logger = require('../middlewares/logger');
 const isValidPost = require('../middlewares/validatePosts');
 const { postBodyParams, validatePostBody } = require('../middlewares/postValidation');
 const authorModel = require('../models/authorModel');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const crypto = require('crypto');
 
 const post = express.Router();
+
+const internalStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    }, //modalità in cui deve venire recuperato il nome del file
+    filename: (req, file, cb) => {
+        const uniqueSuffix = `${new Date().toISOString()}-${crypto.randomUUID()}`;
+        const fileExt = file.originalname.split('.').pop();
+        cb(null, `${file.fieldname}-${uniqueSuffix}.${fileExt}`)
+    }
+});
+
+const uploads = multer({ storage: internalStorage });
+
+post.post('/posts/internalUpload', upload.single('cover'), async (req, res) => {
+    try {
+        res.status(200).json({ cover: req.file.path })
+    } catch (error) {
+        console.error('File upload failed');
+        res.status(500).send({
+            statusCode: 500,
+            message: "Upload not completed correctly",
+        });
+    }
+})
 
 post.get('posts/title', async (req, res) => {
     const { postTitle } = req.query;
