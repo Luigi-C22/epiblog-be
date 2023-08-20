@@ -16,12 +16,12 @@ const authorsRoute = require("./routes/authors");
 const loginRoute = require('./routes/login');
 const resourcesRoute = require('./routes/resources')
 
+app.use('./uploads', express.static(path.join(__dirname, "./uploads")));
+app.use(cors());
+
 //middleware
 app.use(express.json());
 app.use(logger);
-app.use('./uploads', express.static(path.join(__dirname, "./uploads")));
-
-app.use(cors());
 
 // import routes
 app.use("/", authorsRoute);

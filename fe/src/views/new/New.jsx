@@ -11,18 +11,22 @@ const NewBlogPost = props => {
   return (
     <Container className="new-blog-container">
       <Form className="mt-5">
+
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Titolo</Form.Label>
           <Form.Control size="lg" placeholder="Title" />
         </Form.Group>
+
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Cover</Form.Label>
           <Form.Control type="file" size="lg" placeholder="Cover" />
         </Form.Group>
+        
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Autore</Form.Label>
           <Form.Control size="lg" placeholder="Author" />
         </Form.Group>
+
         <Form.Group controlId="blog-category" className="mt-3">
           <Form.Label>Categoria</Form.Label>
           <Form.Control size="lg" as="select">
@@ -33,10 +37,12 @@ const NewBlogPost = props => {
             <option>Gossip</option>
           </Form.Control>
         </Form.Group>
+
         <Form.Group controlId="blog-content" className="mt-3">
           <Form.Label>Contenuto Blog</Form.Label>
           <ReactQuill value={text} onChange={handleChange} className="new-blog-content" />
         </Form.Group>
+        
         <Form.Group className="d-flex mt-3 justify-content-end">
           <Button type="reset" size="lg" variant="outline-dark">
             Reset

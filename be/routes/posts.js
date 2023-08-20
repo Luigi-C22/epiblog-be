@@ -11,22 +11,25 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const crypto = require('crypto');
 
-const post = express.Router();
+const post = express.Router(); //configurazione routing
 
+//inizio della configurazione MULTER
 const internalStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads')
-    }, //modalità in cui deve venire recuperato il nome del file
+        cb(null, 'uploads');
+    }, 
+    //modalità in cui deve venire recuperato il nome del file
     filename: (req, file, cb) => {
         const uniqueSuffix = `${new Date().toISOString()}-${crypto.randomUUID()}`;
         const fileExt = file.originalname.split('.').pop();
         cb(null, `${file.fieldname}-${uniqueSuffix}.${fileExt}`)
     }
-});
+}); //qui termina la configurazione di MULTER
 
 const uploads = multer({ storage: internalStorage });
 
-post.post('/posts/internalUpload', upload.single('cover'), async (req, res) => {
+//questo è l'endpoint per fare l'upload del file
+post.post('/posts/internalUpload', uploads.single('cover'), async (req, res) => {
     try {
         res.status(200).json({ cover: req.file.path })
     } catch (error) {
