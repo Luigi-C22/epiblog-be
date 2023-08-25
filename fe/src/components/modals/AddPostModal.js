@@ -8,13 +8,13 @@ const AddPostModal = () => {
 	const handleFileChange = (e) => {
 		setFile(e.target.files[0]);
 	};
-
+		//viene prima uploaded il file 
 	const uploadFile = async (image) => {
 		const fileData = new FormData();
 		fileData.append("cover", image);
 
 		try {
-			const response = await fetch("http://localhost:5050/posts/uploadImg", {
+			const response = await fetch("http://localhost:5050/posts/internalUpload", {
 				method: "POST",
 				body: fileData,
 			});
@@ -23,7 +23,7 @@ const AddPostModal = () => {
 			console.error("File upload errors occurred");
 		}
 	};
-
+	//successivamente viene inviato il form con il file compreso
 	const submitForm = async (e) => {
 		e.preventDefault();
 
@@ -109,7 +109,7 @@ const AddPostModal = () => {
 									})
 								}
 							/>
-							<input
+							<input  
 								name="content"
 								onChange={(e) =>
 									setFormData({
