@@ -3,20 +3,20 @@ const mongoose = require('mongoose');
 const PostModelSchema = new mongoose.Schema({
     category: {
         type: String,
-        required: true,
+        required: false,
     },
     title: {
         type: String,
-        required: true,
+        required: false,
     },
     cover: {
         type: String,
-        required: true,
+        required: false,
     },
     readTime: {
         value: {
             type: Number,
-            required: true,
+            required: false,
         },
         unit: {
             type: String,
@@ -29,12 +29,12 @@ const PostModelSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true, 
+        required: false, 
     },
 },
  {
-    timestamps: true, 
-    strict: true,
+    timestamps: false, 
+    strict: false,
 });
 
 

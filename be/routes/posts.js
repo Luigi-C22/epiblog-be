@@ -13,6 +13,21 @@ const crypto = require('crypto');
 
 const post = express.Router(); //configurazione routing
 
+cloudinary.config({ 
+    cloud_name: 'dtwf16umd', 
+    api_key: '191411338711878', 
+    api_secret: 'jE6_s_KqtrAYzUKw4wI79NafTkM', 
+  });
+
+  const cloudStorage = new CloudinaryStorage({
+    cloudinary: cloudinary, 
+    params: {
+        folder: 'testEpiBlog',
+        format: async (req, file) => 'png',
+        public_id: (req, file) => file.name,
+    },
+  })
+
 //inizio della configurazione MULTER
 const internalStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -27,11 +42,24 @@ const internalStorage = multer.diskStorage({
 }); //qui termina la configurazione di MULTER
 
 const uploads = multer({ storage: internalStorage });
+const cloudUpload = multer ({ strorage: cloudStorage});
+
+post.post('/posts/cloudUpload', cloudUpload.single('cover'), async (req, res) => {
+    try {
+        res.status(200).json({ cover: req.file.path });
+    } catch (error) {
+        console.error("File upload failed:", error);
+        res.status(500).json({ error: "File upload failed"});
+    }
+    
+});
 
 //questo è l'endpoint per fare l'upload del file
-post.post('/posts/internalUpload', uploads.single('cover'), async (req, res) => {
+/* post.post('/posts/internalUpload', uploads.single('cover'), async (req, res) => {
+    const url = req.protocol + '://' + req.get('host')
     try {
-        res.status(200).json({ cover: req.file.path })
+        const imgUrl = req.file.filename
+        res.status(200).json({ cover: `${url}/uploads/${imgUrl}` });
     } catch (error) {
         console.error('File upload failed');
         res.status(500).send({
@@ -243,6 +271,6 @@ post.delete('/posts/:id', async (req, res) => {
             error,
         });
     }
-})
+}) */
 
 module.exports = post;

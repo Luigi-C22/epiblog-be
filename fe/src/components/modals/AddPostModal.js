@@ -14,7 +14,7 @@ const AddPostModal = () => {
 		fileData.append("cover", image);
 
 		try {
-			const response = await fetch("http://localhost:5050/posts/internalUpload", {
+			const response = await fetch("http://localhost:5050/posts/cloudUpload", {
 				method: "POST",
 				body: fileData,
 			});
@@ -37,7 +37,7 @@ const AddPostModal = () => {
 					cover: uploadedFile.cover,
 				};
 
-				const response = await fetch("http://localhost:5050/createpost", {
+				const response = await fetch("http://localhost:5050/create", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
