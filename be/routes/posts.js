@@ -10,6 +10,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const crypto = require('crypto');
+const verifyToken = require('../middlewares/verifyToken');
 
 const post = express.Router(); //configurazione routing
 
@@ -42,7 +43,7 @@ const internalStorage = multer.diskStorage({
 }); //qui termina la configurazione di MULTER
 
 const uploads = multer({ storage: internalStorage });
-const cloudUpload = multer ({ strorage: cloudStorage});
+const cloudUpload = multer ({ storage: cloudStorage});
 
 post.post('/posts/cloudUpload', cloudUpload.single('cover'), async (req, res) => {
     try {
@@ -55,10 +56,10 @@ post.post('/posts/cloudUpload', cloudUpload.single('cover'), async (req, res) =>
 });
 
 //questo è l'endpoint per fare l'upload del file
-/* post.post('/posts/internalUpload', uploads.single('cover'), async (req, res) => {
+post.post('/posts/internalUpload', uploads.single('cover'), async (req, res) => {
     const url = req.protocol + '://' + req.get('host')
     try {
-        const imgUrl = req.file.filename
+        const imgUrl = req.file.filename ;
         res.status(200).json({ cover: `${url}/uploads/${imgUrl}` });
     } catch (error) {
         console.error('File upload failed');
@@ -99,10 +100,10 @@ post.get('posts/title', async (req, res) => {
     }
 })
 
-
-// get http://localhost:5050/posts?page=pageSize=20 
-post.get('/posts', async (req, res) => {
-    const { page = 1, pageSize = 3 } = req.query //questa riga è l'implementazione della 'pagination'
+ 
+// get http://localhost:5050/posts
+post.get('/posts', verifyToken, async (req, res) => {
+    const { page = 1, pageSize = 6 } = req.query //questa riga è l'implementazione della 'pagination'
     try {
         const posts = await PostsModel.find()
             .limit(pageSize) //limitiamo i numero di documenti a quello che passiamo nella query
@@ -125,7 +126,7 @@ post.get('/posts', async (req, res) => {
             error,
         })
     }
-});
+}); 
 
 
 post.get('/posts/title', async (req, res) => {
@@ -271,6 +272,6 @@ post.delete('/posts/:id', async (req, res) => {
             error,
         });
     }
-}) */
+})
 
-module.exports = post;
+module.exports = post; 

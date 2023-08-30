@@ -5,7 +5,7 @@ Compito - Gestione degli accessi:
 
 . Aggiungi la Token Based Authentication al tuo progetto precedente
 
-. Tutti gli endpoint (tranne /login) devono essere accessibili solo tramite toke
+. Tutti gli endpoint (tranne /login) devono essere accessibili solo tramite token
 
 . Collega il tuo API al frontend (allegato):
     ¤ crea le pagine di registrazione&login per il progetto

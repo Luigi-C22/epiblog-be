@@ -12,7 +12,7 @@ Content-Type: application/json
     "name": "Kit",
     "surname": "Teller",
     "password": "ranger456",
-    "email": "Ranger11@gmail.ko",
+    "email": "Ranger11@gmail.com",
     "dob": "01/04/1988",
     "avatar": "https://www.freepik.com/premium-ai-image/muslim-men-sit-read-books-pray_59122856.htm#query=img&position=47&from_view=keyword&track=sph"
 }

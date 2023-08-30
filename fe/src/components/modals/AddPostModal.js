@@ -37,7 +37,7 @@ const AddPostModal = () => {
 					cover: uploadedFile.cover,
 				};
 
-				const response = await fetch("http://localhost:5050/create", {
+				const response = await fetch("http://localhost:5050/posts/create", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
