@@ -1,32 +1,36 @@
-import React, {useEffect} from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
+import React, { useEffect } from 'react';
+import jwtdecode from 'jwt-decode';
 import Login from "../pages/Login";
+import { Outlet, useNavigate } from 'react-router-dom';
 
-const useAuth = () => {
-    return JSON.parse(localStorage.getItem('auth'));
+//controlla nel Local Storage che ci sia un utente
+const auth = () => {
+    return JSON.parse(localStorage.getItem('userLoggedIn'));
 };
 
-const useSession = () => {
-    const session = useAuth();
-    const decodedSession = session ? jwt_decode(session) : null;
+// custom hook che controlla la sessione
+// decodifica la sessione
+export const useSession = () => {
+    const session = auth();
+    const decodedSession = session ? jwtdecode(session) : null; // ritorna l'oggetto contenente l'utente (in chiaro)
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); //lo useNavigate consente di inviare l'utente da qualche parte
 
     useEffect(() => {
         if (!session) {
-            navigate('/', { replace: true });
+            navigate('/', { replace: true }); //il "replace: true" invalida la browser history
         }
     }, [navigate, session]);
 
+    //ritorna l'oggetto decodificato
     return decodedSession;
 };
 
 const ProtectedRoutes = () => {
-    const isAuth = useAuth();
+    const isAuthorized = auth();
     const session = useSession();
 
-    return isAuth ? <Outlet /> : <Login />;
+    return isAuthorized ? <Outlet /> : <Login />;
 };
 
 export default ProtectedRoutes;

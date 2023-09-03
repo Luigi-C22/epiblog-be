@@ -14,7 +14,7 @@ const app = express();
 const postsRoute = require("./routes/posts");
 const authorsRoute = require("./routes/authors");
 const loginRoute = require('./routes/login');
-const resourcesRoute = require('./routes/resources')
+const githubRoute = require('./routes/githubRoute');
 
 app.use('./uploads', express.static(path.join(__dirname, "./uploads")));
 app.use(cors());
@@ -24,10 +24,11 @@ app.use(express.json());
 app.use(logger);
 
 // import routes
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", authorsRoute);
 app.use("/", postsRoute);
 app.use("/", loginRoute );
-app.use('/', resourcesRoute);
+app.use("/", githubRoute);
 
 mongoose.connect(process.env.MONGO_DB_URL);
 

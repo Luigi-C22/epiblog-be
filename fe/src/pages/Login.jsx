@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
+    const navigate = useNavigate();
 
     const [loginFormData, setLoginFormData] = useState({});
 
@@ -11,41 +13,46 @@ const Login = () => {
 
         await axios
             .post("http://localhost:5050/login", loginFormData)
-            .then(res) => {
-    localStorage.setItem('userLoggedIn', JSON.stringify(res.data.token));
-};
-};
-return (
-    <div className="flex flex-col justify-center items-center">
-        <form
-            onSubmit={onSubmit}
-            className='flex flex-col gap-3 justify-center items-center'
-        >
-            <input
-                className="p-2 bg-zinc-100 text-black rounded"
-                type="email"
-                name='email'
-                onChange={(e) => setLoginFormData({
-                    ...loginFormData,
-                    email: e.target.value,
-                })}
-            />
-
-            <input
-                className="p-2 bg-zinc-100 text-black rounded"
-                type="password"
-                name='password'
-                onChange={(e) => setLoginFormData({
-                    ...loginFormData,
-                    password: e.target.value,
-                })
+            .then((res) => {
+                console.log(res);
+                if (res.statusCode === 200) {
+                    localStorage.setItem('userLoggedIn', JSON.stringify(res.data.token));
                 }
-            />
-            <button type='submit'>Login</button>
-        </form>
+            })
+            .then(() => navigate("/homepage"));
+    };
 
-    </div>
-);
+    return (
+        <div className="flex flex-col justify-center items-center">
+            <form
+                onSubmit={onSubmit}
+                className='flex flex-col gap-3 justify-center items-center'
+            >
+                <input
+                    className="p-2 bg-zinc-100 text-black rounded"
+                    type="email"
+                    name='email'
+                    onChange={(e) => setLoginFormData({
+                        ...loginFormData,
+                        email: e.target.value,
+                    })}
+                />
+
+                <input
+                    className="p-2 bg-zinc-100 text-black rounded"
+                    type="password"
+                    name='password'
+                    onChange={(e) => setLoginFormData({
+                        ...loginFormData,
+                        password: e.target.value,
+                    })
+                    }
+                />
+                <button type='submit'>Login</button>
+            </form>
+
+        </div>
+    );
 }
 
 export default Login;

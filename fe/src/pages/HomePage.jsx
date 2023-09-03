@@ -3,7 +3,8 @@ import { useGetAllPostsQuery } from "../api/apiSlice";
 import MainLayout from "../layouts/MainLayout";
 import SingleCard from "../components/SingleCard";
 import AddPostModal from "../components/modals/AddPostModal";
-import Login from "./Login";
+import { useSession } from "../middlewares/ProtectedRoutes";
+
 
 
 const HomePage = () => {
@@ -11,19 +12,23 @@ const HomePage = () => {
 		data: posts,
 		isLoading: isPostLoading,
 		isSuccess: isPostSuccess,
-		//isError: IsPostError,
+		isError: IsPostError,
 	} = useGetAllPostsQuery({
 		page: 1,
 		pageSize: 6,
 	});
 
+	const session = useSession();
+	console.log(session);
+
 	const [showAddPostModal, setShowAddPostModal] = useState(false);
 
 	const toggleModal = () => setShowAddPostModal(!showAddPostModal);
 
+	
 	return (
 		<MainLayout>
-			<Login />
+			
 			<section className="min-h-screen py-6 sm:py-12 dark:bg-gray-800 dark:text-gray-100">
 				<div className="container p-6 mx-auto space-y-8">
 					<div className="space-y-2 text-center">
@@ -46,18 +51,19 @@ const HomePage = () => {
 							posts?.posts?.map((item) => {
 								return (
 									<SingleCard
-										key={item._id}
-										id={item._id}
-										title={item.title}
-										cover={item.cover}
-										author={item.author}
-										content={item.content}
+										key = {item._id}
+										id = {item._id}
+										title = {item.title}
+										cover = {item.cover}
+										author = {item.author}
+										content = {item.content}
 									/>
 								);
 							})}
 					</div>
+					
 				</div>
-				{showAddPostModal && <AddPostModal close={ toggleModal } />}
+				{showAddPostModal && <AddPostModal close={toggleModal}/>}
 			</section>
 		</MainLayout>
 	);

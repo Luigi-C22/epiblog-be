@@ -101,7 +101,7 @@ author.post('/authors', async (req, res) => {
     } catch (error) {
         res.status(500).send({
             statusCode: 500,
-            message: "Internal serveer error",
+            message: "Internal server error",
         });
     }
 });

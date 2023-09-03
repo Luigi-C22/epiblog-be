@@ -110,14 +110,14 @@ post.get('/posts', verifyToken, async (req, res) => {
             .skip((page - 1) * pageSize) //saltiamo dall'ultima pagina aperta al primo risultato della successiva
             .populate('author', "name surname email dob avatar");
 
-        const totalPosts = await PostsModel.count()
+        const totalPosts = await PostsModel.count();
 
         res.status(200).send({
             statusCode: 200,
             totalPosts: totalPosts,
             currentPage: +page,
             pageSize: +pageSize,
-            posts: posts
+            posts: posts,
         })
     } catch (error) {
         res.status(500).send({
@@ -199,7 +199,7 @@ const newPost = new PostsModel({
 
 try {
     const post = await newPost.save();
-    await authorModel.updateOne({ _id: user._id }, { $push: { posts: post } })
+    await authorModel.updateOne({ _id: user._id }, { $push: { posts: post } });
     res.status(201).send({
         statusCode: 201,
         message: "Post saved successfully",

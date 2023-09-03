@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const login = express.Router();
 const bcrypt = require('bcrypt');
 const AuthorModel = require('../models/authorModel');
@@ -10,8 +10,8 @@ login.post('/login', async (req, res) => {
     if (!user) {
         return res.status(404).send({
             statusCode: 404,
-            message: "User not found!"
-        })
+            message: "User not found!",
+        });
     }
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
@@ -19,8 +19,8 @@ login.post('/login', async (req, res) => {
     if (!validPassword) {
         return res.status(400).send({
             statusCode: 400,
-            message: "Password non valida."
-        })
+            message: "Password non valida.",
+        });
     }
 
     //generare un token
